@@ -32,9 +32,9 @@ export default function NameDateFields({ formData, handleInputChange }: NameDate
             value={formData.date}
             onChange={handleInputChange}
             placeholder="Pick a date"
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#fc4c02] focus:border-transparent appearance-none"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#fc4c02] focus:border-transparent [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-inner-spin-button]:hidden"
           />
-          <Calendar className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5 pointer-events-none" />
+          <Calendar className="absolute right-4 top-1/2 -translate-y-1/2 text-[#fc4c02] w-5 h-5 pointer-events-none" />
         </div>
       </div>
     </div>
