@@ -119,17 +119,6 @@ const AddEventModal = ({ isOpen, onClose }: AddEventModalProps) => {
 
         {/* Content */}
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
-          {/* Free Plan Notice */}
-          <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
-            <p className="text-sm text-gray-700">
-              <span className="font-semibold">Free Plan:</span> Submit community events for review. 
-              <button type="button" className="ml-1 text-[#fc4c02] hover:underline font-semibold">
-                Upgrade to Premium
-              </button>
-              {' '}for instant publishing and priority listing.
-            </p>
-          </div>
-
           {/* Event Name and Date */}
           <NameDateFields
             formData={formData}
