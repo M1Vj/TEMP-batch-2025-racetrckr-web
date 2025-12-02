@@ -179,6 +179,10 @@ export default function ProfilePage() {
     }
   };
 
+  const handleProfileUpdate = (updatedProfile: any) => {
+    setProfile(updatedProfile);
+  };
+
   const resolvedUserId = profile?.id ?? authUserId;
 
   if (loading || !resolvedUserId) {
@@ -194,6 +198,9 @@ export default function ProfilePage() {
       <div className="max-w-7xl mx-auto">
         <ProfileHeader
           userId={resolvedUserId}
+          email={profile?.email || ''}
+          firstName={profile?.first_name || ''}
+          lastName={profile?.last_name || ''}
           name={displayName}
           location={profile?.location || ''}
           bio={profile?.bio || ''}
@@ -207,6 +214,7 @@ export default function ProfilePage() {
             seconds: 36,
           }}
           onAvatarUpdate={handleAvatarUpdate}
+          onProfileUpdate={handleProfileUpdate}
         />
 
         <RaceArchive races={profileRaces} />
