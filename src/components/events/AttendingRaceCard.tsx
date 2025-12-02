@@ -48,7 +48,7 @@ export default function AttendingRaceCard({
   }, [date]);
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow">
+    <div className="bg-white border border-[#fc4c02]/31 rounded-lg overflow-hidden hover:shadow-md transition-shadow">
       <div className="flex gap-4 p-4">
         <div className="w-32 h-32 flex-shrink-0 rounded-md overflow-hidden">
           <img
