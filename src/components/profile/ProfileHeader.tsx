@@ -77,16 +77,16 @@ export default function ProfileHeader({
             <h3 className="text-sm text-gray-600 mb-3">Time on Feet</h3>
             <div className="space-y-0">
               <div className="flex items-baseline justify-center gap-1.5">
-                <span className="text-[#fc4c02] text-2xl font-bold">{String(timeOnFeet.hours).padStart(2, '0')}</span>
-                <span className="text-gray-500 text-xs">Hours</span>
+                <span className="text-[#fc4c02] text-lg font-bold">{String(timeOnFeet.hours).padStart(2, '0')}</span>
+                <span className="text-gray-500 text-[10px]">Hours</span>
               </div>
               <div className="flex items-baseline justify-center gap-1.5">
-                <span className="text-[#fc4c02] text-2xl font-bold">{String(timeOnFeet.minutes).padStart(2, '0')}</span>
-                <span className="text-gray-500 text-xs">Minutes</span>
+                <span className="text-[#fc4c02] text-lg font-bold">{String(timeOnFeet.minutes).padStart(2, '0')}</span>
+                <span className="text-gray-500 text-[10px]">Minutes</span>
               </div>
               <div className="flex items-baseline justify-center gap-1.5">
-                <span className="text-[#fc4c02] text-2xl font-bold">{String(timeOnFeet.seconds).padStart(2, '0')}</span>
-                <span className="text-gray-500 text-xs">Seconds</span>
+                <span className="text-[#fc4c02] text-lg font-bold">{String(timeOnFeet.seconds).padStart(2, '0')}</span>
+                <span className="text-gray-500 text-[10px]">Seconds</span>
               </div>
             </div>
           </div>
