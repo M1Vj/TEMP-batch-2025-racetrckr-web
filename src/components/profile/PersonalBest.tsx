@@ -26,7 +26,7 @@ export default function PersonalBest({ efforts }: PersonalBestProps) {
 
       <h2 className="text-3xl font-bold mb-8">Personal Best</h2>
 
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-4 lg:gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-4 lg:gap-6 [&>*:last-child:nth-child(odd)]:col-span-2 [&>*:last-child:nth-child(odd)]:md:col-span-1">
         {efforts.map((effort, index) => (
           <div key={index} className="text-center">
             {/* Medal Icon */}
@@ -35,7 +35,7 @@ export default function PersonalBest({ efforts }: PersonalBestProps) {
             )}
             
             {/* Distance */}
-            <div className="text-[40px] leading-none mb-2">
+            <div className="text-[28px] md:text-[40px] leading-none mb-2">
               {effort.distance}
               {effort.unit && (
                 <span className={`${effort.unit === "Marathon" || effort.unit === "KM" ? "text-[#fc4c02]" : ""}`}>
