@@ -16,7 +16,7 @@ interface PersonalBestProps {
 
 export default function PersonalBest({ efforts }: PersonalBestProps) {
   return (
-    <div className="bg-white rounded-3xl border border-gray-200 shadow-sm p-8 relative mb-8">
+    <div className="bg-white rounded-3xl border border-[#fc4c02]/31 shadow-sm p-8 relative mb-8">
       {/* Share Icon */}
       <div className="absolute top-6 right-6">
         <button className="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">
