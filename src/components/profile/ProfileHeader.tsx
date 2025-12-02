@@ -1,8 +1,15 @@
+'use client';
+
+import { useState } from 'react';
 import { Edit, Share2 } from "lucide-react";
 import AvatarUpload from "./AvatarUpload";
+import EditProfileModal from "./EditProfileModal";
 
 interface ProfileHeaderProps {
   userId: string;
+  email: string;
+  firstName: string;
+  lastName: string;
   name: string;
   location: string;
   bio: string;
@@ -16,10 +23,14 @@ interface ProfileHeaderProps {
     seconds: number;
   };
   onAvatarUpdate: (newAvatarUrl: string | null) => void;
+  onProfileUpdate: (updatedProfile: any) => void;
 }
 
 export default function ProfileHeader({
   userId,
+  email,
+  firstName,
+  lastName,
   name,
   location,
   bio,
@@ -29,18 +40,40 @@ export default function ProfileHeader({
   totalDistance,
   timeOnFeet,
   onAvatarUpdate,
+  onProfileUpdate,
 }: ProfileHeaderProps) {
+  const [showEditModal, setShowEditModal] = useState(false);
   return (
     <div className="bg-white rounded-3xl border border-[#fc4c02]/31 shadow-sm p-8 mb-8 relative">
       {/* Edit and Share Icons */}
       <div className="absolute top-6 right-6 flex gap-3 z-10">
-        <button className="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">
+        <button 
+          onClick={() => setShowEditModal(true)}
+          className="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+        >
           <Edit className="w-5 h-5 text-gray-600" />
         </button>
         <button className="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">
           <Share2 className="w-5 h-5 text-gray-600" />
         </button>
       </div>
+
+      {/* Edit Profile Modal */}
+      <EditProfileModal
+        isOpen={showEditModal}
+        onClose={() => setShowEditModal(false)}
+        userId={userId}
+        currentProfile={{
+          email,
+          first_name: firstName,
+          last_name: lastName,
+          location,
+          bio,
+          avatar_url: imageUrl,
+          google_avatar_url: googleAvatarUrl,
+        }}
+        onProfileUpdate={onProfileUpdate}
+      />
 
       <div className="flex flex-col gap-8">
         {/* Profile Image and Info */}
