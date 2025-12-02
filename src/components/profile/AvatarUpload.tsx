@@ -19,6 +19,8 @@ interface AvatarUploadProps {
   userName?: string;
   onAvatarUpdate?: (newUrl: string | null) => void;
   size?: 'default' | 'large';
+  showCamera?: boolean;
+  showRemove?: boolean;
 }
 
 export default function AvatarUpload({
@@ -28,6 +30,8 @@ export default function AvatarUpload({
   userName = 'User',
   onAvatarUpdate,
   size = 'default',
+  showCamera = true,
+  showRemove = true,
 }: AvatarUploadProps) {
   const [isUploading, setIsUploading] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -155,22 +159,26 @@ export default function AvatarUpload({
         </div>
 
         {/* Edit Button Overlay */}
-        <button
-          onClick={() => fileInputRef.current?.click()}
-          className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
-          disabled={isUploading || isDeleting}
-        >
-          <Camera className={`${cameraIconSize} text-white`} />
-        </button>
+        {showCamera && (
+          <>
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+              disabled={isUploading || isDeleting}
+            >
+              <Camera className={`${cameraIconSize} text-white`} />
+            </button>
 
-        {/* Camera Icon Badge */}
-        <button
-          onClick={() => fileInputRef.current?.click()}
-          className={`absolute bottom-0 right-0 ${badgeSize} bg-[#fc4c02] rounded-full shadow-lg hover:bg-[#e64602] transition-colors`}
-          disabled={isUploading || isDeleting}
-        >
-          <Camera className={`${badgeIconSize} text-white`} />
-        </button>
+            {/* Camera Icon Badge */}
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              className={`absolute bottom-0 right-0 ${badgeSize} bg-[#fc4c02] rounded-full shadow-lg hover:bg-[#e64602] transition-colors`}
+              disabled={isUploading || isDeleting}
+            >
+              <Camera className={`${badgeIconSize} text-white`} />
+            </button>
+          </>
+        )}
 
         {/* Hidden File Input */}
         <input
@@ -183,8 +191,8 @@ export default function AvatarUpload({
         />
       </div>
 
-      {/* Remove Avatar Button (only show if has custom avatar) */}
-      {hasCustomAvatar && (
+      {/* Remove Avatar Button (only show if has custom avatar and showRemove enabled) */}
+      {showRemove && hasCustomAvatar && (
         <button
           onClick={handleDelete}
           disabled={isDeleting}
