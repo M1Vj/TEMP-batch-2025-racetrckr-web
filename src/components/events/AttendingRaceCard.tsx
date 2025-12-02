@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
+import { calculateTimeRemaining, padNumber } from '@/utils/countdown';
 
 interface AttendingRaceCardProps {
   id: string;
@@ -29,20 +30,17 @@ export default function AttendingRaceCard({
   });
 
   useEffect(() => {
-    const calculateTimeLeft = () => {
-      const difference = date.getTime() - new Date().getTime();
-      
-      if (difference > 0) {
-        setTimeLeft({
-          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-          hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-          minutes: Math.floor((difference / 1000 / 60) % 60),
-        });
-      }
+    const updateCountdown = () => {
+      const remaining = calculateTimeRemaining(date);
+      setTimeLeft({
+        days: remaining.days,
+        hours: remaining.hours,
+        minutes: remaining.minutes,
+      });
     };
 
-    calculateTimeLeft();
-    const timer = setInterval(calculateTimeLeft, 60000);
+    updateCountdown();
+    const timer = setInterval(updateCountdown, 60000);
 
     return () => clearInterval(timer);
   }, [date]);
@@ -83,19 +81,19 @@ export default function AttendingRaceCard({
           <div className="grid grid-cols-3 gap-2">
             <div className="border border-[#fc4c02] rounded-lg px-2 py-1.5 text-center">
               <div className="text-xl sm:text-2xl font-bold leading-none text-[#fc4c02]">
-                {String(timeLeft.days).padStart(2, '0')}
+                {padNumber(timeLeft.days)}
               </div>
               <div className="text-[10px] text-gray-600 mt-0.5">Days</div>
             </div>
             <div className="border border-[#fc4c02] rounded-lg px-2 py-1.5 text-center">
               <div className="text-xl sm:text-2xl font-bold leading-none text-[#fc4c02]">
-                {String(timeLeft.hours).padStart(2, '0')}
+                {padNumber(timeLeft.hours)}
               </div>
               <div className="text-[10px] text-gray-600 mt-0.5">Hours</div>
             </div>
             <div className="border border-[#fc4c02] rounded-lg px-2 py-1.5 text-center">
               <div className="text-xl sm:text-2xl font-bold leading-none text-[#fc4c02]">
-                {String(timeLeft.minutes).padStart(2, '0')}
+                {padNumber(timeLeft.minutes)}
               </div>
               <div className="text-[10px] text-gray-600 mt-0.5">Mins</div>
             </div>
