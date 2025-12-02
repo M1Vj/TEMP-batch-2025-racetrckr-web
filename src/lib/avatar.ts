@@ -145,8 +145,9 @@ export async function updateProfileAvatar(
     const supabase = createClient();
 
     const { error } = await supabase
-      .from('profiles')
-      .update({ avatar_url: avatarUrl })
+        .from('profiles')
+        // set custom avatar and clear google avatar so custom takes precedence
+        .update({ avatar_url: avatarUrl, google_avatar_url: null })
       .eq('id', userId);
 
     if (error) {

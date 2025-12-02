@@ -204,9 +204,7 @@ export default function AvatarUpload({
         </button>
       )}
 
-      {googleAvatarUrl && !hasCustomAvatar && (
-        <p className="mt-2 text-xs text-gray-500">Using Google profile picture</p>
-      )}
+      {/* Google avatar note removed per request */}
 
       {/* Upload Preview Modal */}
       {showModal && previewUrl && (
