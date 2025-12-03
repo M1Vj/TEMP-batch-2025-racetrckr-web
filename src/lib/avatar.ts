@@ -145,11 +145,13 @@ export async function updateProfileAvatar(
     const supabase = createClient();
 
     const { error } = await supabase
-      .from('profiles')
-      .update({ avatar_url: avatarUrl, updated_at: new Date().toISOString() })
+        .from('profiles')
+        // set custom avatar and clear google avatar so custom takes precedence
+        .update({ avatar_url: avatarUrl, google_avatar_url: null })
       .eq('id', userId);
 
     if (error) {
+      console.error('RLS Error details:', error);
       return { success: false, error: error.message };
     }
 
