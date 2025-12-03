@@ -105,17 +105,9 @@ export default function DashboardPage() {
           ? `${profile.first_name || ''}${profile.last_name ? ' ' + profile.last_name : ''}`.trim()
           : 'Runner';
 
-        // Fetch upcoming race (next race in the future)
-        const now = new Date().toISOString().split('T')[0];
-        const { data: upcomingRaces } = await supabase
-          .from('races')
-          .select('name, date, city_municipality, province')
-          .eq('user_id', user.id)
-          .gte('date', now)
-          .order('date', { ascending: true })
-          .limit(1);
-
-        const upcomingRace = upcomingRaces && upcomingRaces.length > 0 ? upcomingRaces[0] : null;
+        // TODO: Fetch upcoming race from events table (to be implemented with events database integration)
+        // For now, set to null to show empty state
+        const upcomingRace = null;
 
         // Calculate best efforts for standard distances
         const STANDARD_DISTANCES = [
@@ -209,16 +201,7 @@ export default function DashboardPage() {
           totalRaces,
           totalDistance: Math.round(totalDistance * 100) / 100,
           timeOnFeet: { hours, minutes, seconds },
-          nextRace: upcomingRace ? {
-            raceName: upcomingRace.name,
-            location: `${upcomingRace.city_municipality}, ${upcomingRace.province}`,
-            date: new Date(upcomingRace.date).toLocaleDateString('en-US', {
-              month: 'long',
-              day: 'numeric',
-              year: 'numeric',
-            }),
-            raceDate: new Date(upcomingRace.date),
-          } : null,
+          nextRace: null, // Will be populated from events table in future integration
           achievements: calculatedAchievements,
         });
       } catch (error) {
