@@ -111,29 +111,10 @@ export default function DashboardPage() {
           ? `${profile.first_name || ''}${profile.last_name ? ' ' + profile.last_name : ''}`.trim()
           : 'Runner';
 
-        // TODO: Fetch upcoming race from events table (to be implemented with events database integration)
-        // For now, set to null to show empty state
+        // TODO: Fetch upcoming race and upcoming races from events table (to be implemented with events database integration)
+        // For now, set to null/empty to show empty state
         const upcomingRace = null;
-
-        // Fetch upcoming races for calendar sidebar (future races from user's completed races)
-        const today = new Date().toISOString().split('T')[0];
-        const { data: futureRaces } = await supabase
-          .from('races')
-          .select('name, date, city_municipality, province')
-          .eq('user_id', user.id)
-          .gte('date', today)
-          .order('date', { ascending: true })
-          .limit(5);
-
-        const formattedUpcomingRaces = futureRaces?.map((race) => ({
-          date: new Date(race.date).toLocaleDateString('en-US', {
-            month: 'short',
-            day: 'numeric',
-            year: 'numeric',
-          }),
-          name: race.name,
-          location: `${race.city_municipality}, ${race.province}`,
-        })) || [];
+        const formattedUpcomingRaces: Array<{ date: string; name: string; location: string }> = [];
 
         // Calculate best efforts for standard distances
         const STANDARD_DISTANCES = [
