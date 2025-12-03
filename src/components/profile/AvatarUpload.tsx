@@ -13,11 +13,14 @@ import {
 } from '@/lib/avatar';
 
 interface AvatarUploadProps {
-  userId: string;
+  userId?: string | null;
   currentAvatarUrl?: string | null;
   googleAvatarUrl?: string | null;
   userName?: string;
   onAvatarUpdate?: (newUrl: string | null) => void;
+  size?: 'default' | 'large';
+  showCamera?: boolean;
+  showRemove?: boolean;
 }
 
 export default function AvatarUpload({
@@ -26,6 +29,9 @@ export default function AvatarUpload({
   googleAvatarUrl,
   userName = 'User',
   onAvatarUpdate,
+  size = 'default',
+  showCamera = true,
+  showRemove = true,
 }: AvatarUploadProps) {
   const [isUploading, setIsUploading] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -54,6 +60,11 @@ export default function AvatarUpload({
   const handleUpload = async () => {
     if (!fileInputRef.current?.files?.[0]) return;
 
+    if (!userId) {
+      toast.error('Profile still loading. Please try again in a moment.');
+      return;
+    }
+
     setIsUploading(true);
     const file = fileInputRef.current.files[0];
 
@@ -61,14 +72,14 @@ export default function AvatarUpload({
       // Upload to storage
       const { url, error: uploadError } = await uploadAvatar(userId, file);
       if (uploadError) {
-        toast.error(uploadError);
+        toast.error(`Upload failed: ${uploadError}`);
         return;
       }
 
       // Update profile
-      const { error: updateError } = await updateProfileAvatar(userId, url);
+      const { success, error: updateError } = await updateProfileAvatar(userId, url);
       if (updateError) {
-        toast.error(updateError);
+        toast.error(`Profile update failed: ${updateError}`);
         return;
       }
 
@@ -91,6 +102,10 @@ export default function AvatarUpload({
 
   const handleDelete = async () => {
     if (!hasCustomAvatar) return;
+    if (!userId) {
+      toast.error('Profile still loading. Please try again in a moment.');
+      return;
+    }
 
     setIsDeleting(true);
     try {
@@ -118,11 +133,17 @@ export default function AvatarUpload({
     }
   };
 
+  const avatarSize = size === 'large' ? 'w-32 h-32' : 'w-32 h-32';
+  const textSize = size === 'large' ? 'text-4xl' : 'text-3xl';
+  const cameraIconSize = size === 'large' ? 'w-10 h-10' : 'w-8 h-8';
+  const badgeSize = size === 'large' ? 'p-3' : 'p-2';
+  const badgeIconSize = size === 'large' ? 'w-6 h-6' : 'w-5 h-5';
+
   return (
     <>
       {/* Avatar Display */}
       <div className="relative group">
-        <div className="relative w-32 h-32 rounded-full overflow-hidden bg-gray-200 border-4 border-white shadow-lg">
+        <div className={`relative ${avatarSize} rounded-full overflow-hidden bg-gray-200 border-4 border-gray-100 shadow-lg flex-shrink-0`}>
           {displayAvatar ? (
             <Image
               src={displayAvatar}
@@ -131,29 +152,33 @@ export default function AvatarUpload({
               className="object-cover"
             />
           ) : (
-            <div className="w-full h-full flex items-center justify-center bg-[#fc4c02] text-white text-3xl font-bold">
+            <div className={`w-full h-full flex items-center justify-center bg-[#fc4c02] text-white ${textSize} font-bold`}>
               {initials}
             </div>
           )}
         </div>
 
         {/* Edit Button Overlay */}
-        <button
-          onClick={() => fileInputRef.current?.click()}
-          className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
-          disabled={isUploading || isDeleting}
-        >
-          <Camera className="w-8 h-8 text-white" />
-        </button>
+        {showCamera && (
+          <>
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+              disabled={isUploading || isDeleting}
+            >
+              <Camera className={`${cameraIconSize} text-white`} />
+            </button>
 
-        {/* Camera Icon Badge */}
-        <button
-          onClick={() => fileInputRef.current?.click()}
-          className="absolute bottom-0 right-0 p-2 bg-[#fc4c02] rounded-full shadow-lg hover:bg-[#e64602] transition-colors"
-          disabled={isUploading || isDeleting}
-        >
-          <Camera className="w-5 h-5 text-white" />
-        </button>
+            {/* Camera Icon Badge */}
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              className={`absolute bottom-0 right-0 ${badgeSize} bg-[#fc4c02] rounded-full shadow-lg hover:bg-[#e64602] transition-colors`}
+              disabled={isUploading || isDeleting}
+            >
+              <Camera className={`${badgeIconSize} text-white`} />
+            </button>
+          </>
+        )}
 
         {/* Hidden File Input */}
         <input
@@ -166,8 +191,8 @@ export default function AvatarUpload({
         />
       </div>
 
-      {/* Remove Avatar Button (only show if has custom avatar) */}
-      {hasCustomAvatar && (
+      {/* Remove Avatar Button (only show if has custom avatar and showRemove enabled) */}
+      {showRemove && hasCustomAvatar && (
         <button
           onClick={handleDelete}
           disabled={isDeleting}
@@ -187,9 +212,7 @@ export default function AvatarUpload({
         </button>
       )}
 
-      {googleAvatarUrl && !hasCustomAvatar && (
-        <p className="mt-2 text-xs text-gray-500">Using Google profile picture</p>
-      )}
+      {/* Google avatar note removed per request */}
 
       {/* Upload Preview Modal */}
       {showModal && previewUrl && (
