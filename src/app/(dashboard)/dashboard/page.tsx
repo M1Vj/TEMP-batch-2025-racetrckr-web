@@ -35,6 +35,11 @@ export default function DashboardPage() {
       pace: string;
       raceName: string;
     }>;
+    upcomingRaces: Array<{
+      date: string;
+      name: string;
+      location: string;
+    }>;
   }>({
     name: '',
     totalRaces: 0,
@@ -46,6 +51,7 @@ export default function DashboardPage() {
     },
     nextRace: null,
     achievements: [],
+    upcomingRaces: [],
   });
   const [loading, setLoading] = useState(true);
 
@@ -108,6 +114,26 @@ export default function DashboardPage() {
         // TODO: Fetch upcoming race from events table (to be implemented with events database integration)
         // For now, set to null to show empty state
         const upcomingRace = null;
+
+        // Fetch upcoming races for calendar sidebar (future races from user's completed races)
+        const today = new Date().toISOString().split('T')[0];
+        const { data: futureRaces } = await supabase
+          .from('races')
+          .select('name, date, city_municipality, province')
+          .eq('user_id', user.id)
+          .gte('date', today)
+          .order('date', { ascending: true })
+          .limit(5);
+
+        const formattedUpcomingRaces = futureRaces?.map((race) => ({
+          date: new Date(race.date).toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric',
+          }),
+          name: race.name,
+          location: `${race.city_municipality}, ${race.province}`,
+        })) || [];
 
         // Calculate best efforts for standard distances
         const STANDARD_DISTANCES = [
@@ -203,6 +229,7 @@ export default function DashboardPage() {
           timeOnFeet: { hours, minutes, seconds },
           nextRace: null, // Will be populated from events table in future integration
           achievements: calculatedAchievements,
+          upcomingRaces: formattedUpcomingRaces,
         });
       } catch (error) {
         console.error('Error loading dashboard data:', error);
@@ -281,7 +308,7 @@ export default function DashboardPage() {
 
             {/* Right Column - Calendar Sidebar */}
             <div className="lg:col-span-1">
-              <CalendarSidebar />
+              <CalendarSidebar upcomingRaces={userData.upcomingRaces} />
             </div>
           </div>
         </main>
