@@ -226,7 +226,7 @@ export default function EventDetailsModal({ isOpen, onClose, event }: EventDetai
             </div>
 
             {/* Action Buttons */}
-            <div className="flex flex-wrap gap-3 items-center justify-end">
+            <div className="flex flex-wrap gap-3 items-center justify-center">
               {/* Mark as Attending Button */}
               <button
                 onClick={handleMarkAsAttending}
