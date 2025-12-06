@@ -102,10 +102,10 @@ export default function Home() {
       <section className="relative bg-gradient-to-br from-[#FF6B00] to-[#FF8C33] text-white overflow-hidden">
         <div className="absolute inset-0 bg-black/10"></div>
         
-        <div className="relative max-w-7xl mx-auto px-6 py-16 md:py-24 lg:py-32">
+        <div className="relative max-w-7xl mx-auto px-6 py-4 md:py-6 lg:py-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Left Column - Hero Content */}
-            <div className="space-y-6 lg:space-y-8">
+            <div className="space-y-3 lg:space-y-4">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -120,7 +120,7 @@ export default function Home() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 }}
-                className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight"
+                className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight"
               >
                 Your Running Journey Starts Here
               </motion.h1>
@@ -129,7 +129,7 @@ export default function Home() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
-                className="text-lg md:text-xl text-white/90 max-w-xl"
+                className="text-base md:text-lg text-white/90 max-w-xl"
               >
                 Track your race progress, discover upcoming events, and celebrate your achievements with RaceTrckr - the ultimate companion for every runner.
               </motion.p>
@@ -138,19 +138,17 @@ export default function Home() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.3 }}
-                className="flex flex-col sm:flex-row gap-4 pt-4"
+                className="flex flex-col sm:flex-row gap-4 pt-2"
               >
                 <Button
                   onClick={handleGetStarted}
-                  className="bg-white text-[#FF6B00] px-8 py-4 rounded-full font-semibold hover:bg-gray-50 transition-colors shadow-lg h-auto"
-                  size="lg"
+                  className="bg-white text-[#FF6B00] px-6 py-3 rounded-full font-semibold hover:bg-gray-50 transition-colors shadow-lg h-auto"
                 >
                   Get Started
                 </Button>
                 <Button
                   variant="outline"
-                  className="bg-white/10 backdrop-blur-sm text-white px-8 py-4 rounded-full font-semibold hover:bg-white/20 transition-colors border-2 border-white/30 h-auto"
-                  size="lg"
+                  className="bg-white/10 backdrop-blur-sm text-white px-6 py-3 rounded-full font-semibold hover:bg-white/20 transition-colors border-2 border-white/30 h-auto"
                 >
                   Learn More
                 </Button>
@@ -161,19 +159,19 @@ export default function Home() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.4 }}
-                className="grid grid-cols-3 gap-6 pt-8 border-t border-white/20"
+                className="grid grid-cols-3 gap-6 pt-6 border-t border-white/20"
               >
                 <div>
-                  <div className="text-3xl md:text-4xl font-bold">10K+</div>
-                  <div className="text-white/80 text-sm mt-1">Active Runners</div>
+                  <div className="text-2xl md:text-3xl font-bold">10K+</div>
+                  <div className="text-white/80 text-xs mt-1">Active Runners</div>
                 </div>
                 <div>
-                  <div className="text-3xl md:text-4xl font-bold">50K+</div>
-                  <div className="text-white/80 text-sm mt-1">Races Tracked</div>
+                  <div className="text-2xl md:text-3xl font-bold">50K+</div>
+                  <div className="text-white/80 text-xs mt-1">Races Tracked</div>
                 </div>
                 <div>
-                  <div className="text-3xl md:text-4xl font-bold">200+</div>
-                  <div className="text-white/80 text-sm mt-1">Cities</div>
+                  <div className="text-2xl md:text-3xl font-bold">200+</div>
+                  <div className="text-white/80 text-xs mt-1">Cities</div>
                 </div>
               </motion.div>
             </div>
