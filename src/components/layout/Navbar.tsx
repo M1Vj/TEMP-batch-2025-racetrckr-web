@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { toast } from 'sonner';
 import { Menu, X, LogOut } from 'lucide-react';
 import LogoutModal from '@/components/navbar/LogoutModal';
@@ -19,6 +19,7 @@ interface UserProfile {
 
 export default function Navbar() {
   const router = useRouter();
+  const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
@@ -81,13 +82,28 @@ export default function Navbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center gap-15">
-            <Link href="/dashboard" className="text-black-700 hover:text-[#fc4c02] transition-colors font-medium">
+            <Link 
+              href="/dashboard" 
+              className={`transition-colors font-medium ${
+                pathname === '/dashboard' ? 'text-[#fc4c02]' : 'text-black-700 hover:text-[#fc4c02]'
+              }`}
+            >
               Dashboard
             </Link>
-            <Link href="/events" className="text-black-700 hover:text-[#fc4c02] transition-colors font-medium">
+            <Link 
+              href="/events" 
+              className={`transition-colors font-medium ${
+                pathname === '/events' ? 'text-[#fc4c02]' : 'text-black-700 hover:text-[#fc4c02]'
+              }`}
+            >
               Events
             </Link>
-            <Link href="/addrace" className="text-black-700 hover:text-[#fc4c02] transition-colors font-medium">
+            <Link 
+              href="/addrace" 
+              className={`transition-colors font-medium ${
+                pathname === '/addrace' ? 'text-[#fc4c02]' : 'text-black-700 hover:text-[#fc4c02]'
+              }`}
+            >
               Add Race
             </Link>
           </div>
@@ -96,7 +112,9 @@ export default function Navbar() {
           <div className="hidden lg:flex items-center gap-3">
             <Link 
               href="/profile" 
-              className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-gray-200 hover:border-[#fc4c02] transition-colors"
+              className={`relative w-10 h-10 rounded-full overflow-hidden border-2 transition-colors ${
+                pathname === '/profile' ? 'border-[#fc4c02]' : 'border-gray-200 hover:border-[#fc4c02]'
+              }`}
             >
               {userProfile && getAvatarUrl(userProfile.avatar_url, userProfile.google_avatar_url) ? (
                 <Image
@@ -136,28 +154,44 @@ export default function Navbar() {
             <div className="flex flex-col gap-2">
               <Link 
                 href="/dashboard" 
-                className="px-4 py-2 text-gray-700 hover:text-[#fc4c02] hover:bg-orange-50 rounded-md transition-colors font-medium"
+                className={`px-4 py-2 rounded-md transition-colors font-medium ${
+                  pathname === '/dashboard' 
+                    ? 'text-[#fc4c02] bg-orange-50' 
+                    : 'text-gray-700 hover:text-[#fc4c02] hover:bg-orange-50'
+                }`}
                 onClick={() => setIsMenuOpen(false)}
               >
                 Dashboard
               </Link>
               <Link 
                 href="/events" 
-                className="px-4 py-2 text-gray-700 hover:text-[#fc4c02] hover:bg-orange-50 rounded-md transition-colors font-medium"
+                className={`px-4 py-2 rounded-md transition-colors font-medium ${
+                  pathname === '/events' 
+                    ? 'text-[#fc4c02] bg-orange-50' 
+                    : 'text-gray-700 hover:text-[#fc4c02] hover:bg-orange-50'
+                }`}
                 onClick={() => setIsMenuOpen(false)}
               >
                 Events
               </Link>
               <Link 
                 href="/addrace" 
-                className="px-4 py-2 text-gray-700 hover:text-[#fc4c02] hover:bg-orange-50 rounded-md transition-colors font-medium"
+                className={`px-4 py-2 rounded-md transition-colors font-medium ${
+                  pathname === '/addrace' 
+                    ? 'text-[#fc4c02] bg-orange-50' 
+                    : 'text-gray-700 hover:text-[#fc4c02] hover:bg-orange-50'
+                }`}
                 onClick={() => setIsMenuOpen(false)}
               >
                 Add Race
               </Link>
               <Link 
                 href="/profile" 
-                className="px-4 py-2 flex items-center gap-3 text-gray-700 hover:text-[#fc4c02] hover:bg-orange-50 rounded-md transition-colors font-medium"
+                className={`px-4 py-2 flex items-center gap-3 rounded-md transition-colors font-medium ${
+                  pathname === '/profile' 
+                    ? 'text-[#fc4c02] bg-orange-50' 
+                    : 'text-gray-700 hover:text-[#fc4c02] hover:bg-orange-50'
+                }`}
                 onClick={() => setIsMenuOpen(false)}
               >
                 <div className="relative w-8 h-8 rounded-full overflow-hidden border-2 border-gray-200 flex-shrink-0">
