@@ -8,7 +8,7 @@ interface DistanceFiltersProps {
 
 export default function DistanceFilters({ filters, selectedFilters, toggleFilter }: DistanceFiltersProps) {
   return (
-    <div className="flex gap-2 flex-wrap items-center">
+    <div className="flex gap-2 flex-wrap items-center justify-center">
       <span className="text-sm text-gray-500 font-medium mr-2">Filter by:</span>
       {filters.map((filter) => (
         <button
