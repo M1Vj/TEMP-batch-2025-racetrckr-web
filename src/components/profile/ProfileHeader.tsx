@@ -95,24 +95,30 @@ export default function ProfileHeader({
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-3 gap-3 sm:gap-4 md:gap-6 lg:gap-8 w-full max-w-4xl mx-auto">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6 lg:gap-8 w-full max-w-4xl mx-auto [&>*:last-child:nth-child(odd)]:col-span-2 [&>*:last-child:nth-child(odd)]:md:col-span-1">
           {/* Total Races */}
           <div className="text-center">
-            <h3 className="text-xs sm:text-sm font-medium text-gray-600 mb-2 sm:mb-3">Total Races</h3>
-            <div className="text-[48px] sm:text-[60px] md:text-[80px] leading-none font-normal">{totalRaces}</div>
+            <h3 className="text-sm sm:text-base md:text-lg font-bold text-gray-600 mb-2 sm:mb-3">Total Races</h3>
+            <div className="text-[56px] sm:text-[68px] md:text-[88px] leading-none font-normal">{totalRaces}</div>
           </div>
 
           {/* Total Distance */}
           <div className="text-center">
-            <h3 className="text-xs sm:text-sm font-medium text-gray-600 mb-2 sm:mb-3">Total Distance</h3>
-            <div className="text-[48px] sm:text-[60px] md:text-[80px] leading-none font-normal">
-              {totalDistance}<span className="text-[#fc4c02] text-[16px] sm:text-[18px] md:text-[20px]">KM</span>
+            <h3 className="text-sm sm:text-base md:text-lg font-bold text-gray-600 mb-2 sm:mb-3">Total Distance</h3>
+            <div className="leading-none font-normal">
+              <span className="text-[56px] sm:text-[68px] md:text-[88px]">
+                {Math.floor(totalDistance)}
+              </span>
+              <span className="text-[28px] sm:text-[34px] md:text-[44px]">
+                {(totalDistance % 1).toFixed(2).substring(1)}
+              </span>
+              <span className="text-[#fc4c02] text-[16px] sm:text-[18px] md:text-[20px]">KM</span>
             </div>
           </div>
 
           {/* Time on Feet */}
           <div className="text-center">
-            <h3 className="text-xs sm:text-sm font-medium text-gray-600 mb-2 sm:mb-3">Time on Feet</h3>
+            <h3 className="text-sm sm:text-base md:text-lg font-bold text-gray-600 mb-2 sm:mb-3">Time on Feet</h3>
             <div className="space-y-0.5 sm:space-y-1">
               <div className="flex items-baseline justify-center gap-1 sm:gap-2">
                 <span className="text-[#fc4c02] text-[20px] sm:text-[24px] md:text-[28px] leading-none">
