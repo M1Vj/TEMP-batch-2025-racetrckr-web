@@ -19,7 +19,7 @@ export default function BestEffortsCard({ achievements }: BestEffortsCardProps) 
       </h2>
 
       <div className="bg-white border border-[#fc4c02]/31 rounded-3xl shadow-lg p-8">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-6 [&>*:last-child:nth-child(odd)]:col-span-2 [&>*:last-child:nth-child(odd)]:md:col-span-1">
           {achievements.map((achievement, index) => {
             const hasData = achievement.time && achievement.time !== '--:--:--';
             
