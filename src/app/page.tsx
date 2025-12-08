@@ -99,10 +99,10 @@ export default function Home() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-[#FF6B00] to-[#FF8C33] text-white overflow-hidden">
+      <section className="relative bg-gradient-to-br from-[#FF6B00] to-[#FF8C33] text-white overflow-hidden min-h-screen flex items-start pt-16 lg:pt-24">
         <div className="absolute inset-0 bg-black/10"></div>
         
-        <div className="relative max-w-7xl mx-auto px-6 py-4 md:py-6 lg:py-8">
+        <div className="relative max-w-7xl mx-auto px-6 w-full">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Left Column - Hero Content */}
             <div className="space-y-3 lg:space-y-4">
@@ -146,27 +146,6 @@ export default function Home() {
                 >
                   Get Started
                 </Button>
-              </motion.div>
-              
-              {/* Stats */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.4 }}
-                className="grid grid-cols-3 gap-6 pt-6 border-t border-white/20"
-              >
-                <div>
-                  <div className="text-2xl md:text-3xl font-bold">10K+</div>
-                  <div className="text-white/80 text-xs mt-1">Active Runners</div>
-                </div>
-                <div>
-                  <div className="text-2xl md:text-3xl font-bold">50K+</div>
-                  <div className="text-white/80 text-xs mt-1">Races Tracked</div>
-                </div>
-                <div>
-                  <div className="text-2xl md:text-3xl font-bold">200+</div>
-                  <div className="text-white/80 text-xs mt-1">Cities</div>
-                </div>
               </motion.div>
             </div>
             
