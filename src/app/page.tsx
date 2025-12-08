@@ -16,8 +16,19 @@ export default function Home() {
   const [events, setEvents] = useState<any[]>([]);
 
   useEffect(() => {
-    async function fetchEvents() {
+    async function checkAuthAndFetchEvents() {
       const supabase = createClient();
+      
+      // Check if user is logged in
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (user) {
+        // Redirect to dashboard if logged in
+        router.push('/dashboard');
+        return;
+      }
+
+      // Fetch events only if not logged in
       const { data, error } = await supabase
         .from('events')
         .select('id, title, event_date, city_municipality, province, cover_image_url')
@@ -31,8 +42,8 @@ export default function Home() {
       }
     }
 
-    fetchEvents();
-  }, []);
+    checkAuthAndFetchEvents();
+  }, [router]);
 
   const handleGetStarted = () => {
     router.push('/signup');
@@ -99,18 +110,18 @@ export default function Home() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-[#FF6B00] to-[#FF8C33] text-white overflow-hidden">
+      <section className="relative bg-gradient-to-br from-[#FF6B00] to-[#FF8C33] text-white overflow-hidden min-h-screen flex items-start pt-16 lg:pt-24">
         <div className="absolute inset-0 bg-black/10"></div>
         
-        <div className="relative max-w-7xl mx-auto px-6 py-16 md:py-24 lg:py-32">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="relative max-w-7xl mx-auto px-6 w-full">
+          <div className={`grid gap-12 items-center ${events.length >= 3 ? 'grid-cols-1 lg:grid-cols-2' : 'grid-cols-1'}`}>
             {/* Left Column - Hero Content */}
-            <div className="space-y-6 lg:space-y-8">
+            <div className={`space-y-3 lg:space-y-4 ${events.length < 3 ? 'text-center max-w-3xl mx-auto' : ''}`}>
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
-                className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full"
+                className={`inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full ${events.length < 3 ? 'mx-auto' : ''}`}
               >
                 <Trophy className="w-4 h-4" />
                 <span className="text-sm">Track. Race. Achieve.</span>
@@ -120,7 +131,7 @@ export default function Home() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 }}
-                className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight"
+                className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight"
               >
                 Your Running Journey Starts Here
               </motion.h1>
@@ -129,7 +140,7 @@ export default function Home() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
-                className="text-lg md:text-xl text-white/90 max-w-xl"
+                className="text-base md:text-lg text-white/90 max-w-xl"
               >
                 Track your race progress, discover upcoming events, and celebrate your achievements with RaceTrckr - the ultimate companion for every runner.
               </motion.p>
@@ -138,62 +149,28 @@ export default function Home() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.3 }}
-                className="flex flex-col sm:flex-row gap-4 pt-4"
+                className={`pt-2 ${events.length < 3 ? 'flex justify-center' : ''}`}
               >
                 <Button
                   onClick={handleGetStarted}
-                  className="bg-white text-[#FF6B00] px-8 py-4 rounded-full font-semibold hover:bg-gray-50 transition-colors shadow-lg h-auto"
-                  size="lg"
+                  className="bg-white text-[#FF6B00] px-6 py-3 rounded-full font-semibold hover:bg-gray-50 transition-colors shadow-lg h-auto"
                 >
                   Get Started
                 </Button>
-                <Button
-                  variant="outline"
-                  className="bg-white/10 backdrop-blur-sm text-white px-8 py-4 rounded-full font-semibold hover:bg-white/20 transition-colors border-2 border-white/30 h-auto"
-                  size="lg"
-                >
-                  Learn More
-                </Button>
-              </motion.div>
-              
-              {/* Stats */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.4 }}
-                className="grid grid-cols-3 gap-6 pt-8 border-t border-white/20"
-              >
-                <div>
-                  <div className="text-3xl md:text-4xl font-bold">10K+</div>
-                  <div className="text-white/80 text-sm mt-1">Active Runners</div>
-                </div>
-                <div>
-                  <div className="text-3xl md:text-4xl font-bold">50K+</div>
-                  <div className="text-white/80 text-sm mt-1">Races Tracked</div>
-                </div>
-                <div>
-                  <div className="text-3xl md:text-4xl font-bold">200+</div>
-                  <div className="text-white/80 text-sm mt-1">Cities</div>
-                </div>
               </motion.div>
             </div>
             
             {/* Right Column - Upcoming Events Cards */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="hidden lg:flex items-center justify-center"
-            >
-              {events.length > 0 ? (
+            {events.length >= 3 && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="hidden lg:flex items-center justify-center"
+              >
                 <DisplayCards cards={eventCards} />
-              ) : (
-                <div className="text-center text-white/80">
-                  <Calendar className="w-16 h-16 mx-auto mb-4 opacity-50" />
-                  <p className="text-lg">Loading upcoming events...</p>
-                </div>
-              )}
-            </motion.div>
+              </motion.div>
+            )}
           </div>
         </div>
       </section>
@@ -242,7 +219,7 @@ export default function Home() {
               </div>
               <h3 className="text-2xl font-semibold mb-4">Track Your Progress</h3>
               <p className="text-gray-600">
-                Monitor your race statistics, total distance, and time on feet. Watch your progress grow with every run.
+                Comprehensive race analytics with detailed statistics including total distance covered, time on feet, and performance metrics across all your runs.
               </p>
             </motion.div>
 
@@ -259,7 +236,7 @@ export default function Home() {
               </div>
               <h3 className="text-2xl font-semibold mb-4">Discover Races</h3>
               <p className="text-gray-600">
-                Find upcoming running events in your area. Filter by distance, date, and location to find your perfect race.
+                Access a curated database of running events nationwide. Advanced filtering by distance, date, and location helps you find races that match your goals.
               </p>
             </motion.div>
 
@@ -276,7 +253,7 @@ export default function Home() {
               </div>
               <h3 className="text-2xl font-semibold mb-4">Race Calendar</h3>
               <p className="text-gray-600">
-                Keep track of your upcoming races with our integrated calendar. Never miss a race day again.
+                Integrated calendar system to organize and manage your racing schedule. Automated reminders ensure you're always prepared for race day.
               </p>
             </motion.div>
 
@@ -293,7 +270,7 @@ export default function Home() {
               </div>
               <h3 className="text-2xl font-semibold mb-4">Countdown Timers</h3>
               <p className="text-gray-600">
-                Stay motivated with countdown timers for your next race. Build anticipation and stay focused on your goals.
+                Real-time countdown timers for registered events help maintain motivation and focus. Strategic preparation tools to optimize race-day performance.
               </p>
             </motion.div>
 
@@ -310,7 +287,7 @@ export default function Home() {
               </div>
               <h3 className="text-2xl font-semibold mb-4">Personal Bests</h3>
               <p className="text-gray-600">
-                Track your personal records across all distances. Celebrate your achievements and set new goals.
+                Automatic tracking of personal records across all race distances. Historical performance data enables goal-setting and milestone achievement.
               </p>
             </motion.div>
 
@@ -327,7 +304,7 @@ export default function Home() {
               </div>
               <h3 className="text-2xl font-semibold mb-4">Best Efforts</h3>
               <p className="text-gray-600">
-                View your best performances across different race distances and track your improvement over time.
+                Advanced performance analytics showcasing top results across standard race distances. Data-driven insights to track improvement and identify training opportunities.
               </p>
             </motion.div>
           </motion.div>
@@ -377,7 +354,7 @@ export default function Home() {
               </div>
               <h3 className="text-xl font-semibold mb-3">Create Your Profile</h3>
               <p className="text-gray-600">
-                Sign up and set up your runner profile with your basic information and running goals.
+                Register and build your personalized runner profile with demographic information, training history, and performance objectives.
               </p>
             </motion.div>
 
@@ -393,7 +370,7 @@ export default function Home() {
               </div>
               <h3 className="text-xl font-semibold mb-3">Find & Add Races</h3>
               <p className="text-gray-600">
-                Browse our race database or manually add your upcoming races and past results.
+                Search our comprehensive event database or manually log upcoming races and historical results with detailed race information and performance metrics.
               </p>
             </motion.div>
 
@@ -409,7 +386,7 @@ export default function Home() {
               </div>
               <h3 className="text-xl font-semibold mb-3">Track & Improve</h3>
               <p className="text-gray-600">
-                Monitor your progress, celebrate achievements, and continuously improve your performance.
+                Leverage data-driven insights to monitor progress, recognize achievements, and implement continuous performance improvement strategies.
               </p>
             </motion.div>
           </motion.div>

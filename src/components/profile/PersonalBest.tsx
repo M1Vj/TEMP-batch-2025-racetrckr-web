@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Trophy, Share2, Calendar, Plus } from "lucide-react";
+import { Trophy, Calendar, Plus } from "lucide-react";
 
 interface BestEffort {
   distance: string;
@@ -23,15 +23,6 @@ export default function PersonalBest({ efforts }: PersonalBestProps) {
       <h2 className="text-3xl font-bold mb-6">Personal Best</h2>
       
       <div className="bg-white rounded-3xl border border-[#fc4c02]/31 shadow-sm p-8 relative">
-        {/* Share Icon */}
-        {hasAnyEffort && (
-          <div className="absolute top-6 right-6">
-            <button className="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">
-              <Share2 className="w-5 h-5 text-gray-600" />
-            </button>
-          </div>
-        )}
-
         {!hasAnyEffort ? (
           <div className="text-center py-4">
             <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -60,38 +51,50 @@ export default function PersonalBest({ efforts }: PersonalBestProps) {
           </div>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4 lg:gap-6 [&>*:last-child:nth-child(odd)]:col-span-2 [&>*:last-child:nth-child(odd)]:md:col-span-1">
-            {efforts.map((effort, index) => (
-          <div key={index} className="text-center">
-            {/* Medal Icon */}
-            {effort.hasMedal && (
-              <Trophy className="w-6 h-6 mx-auto mb-2 text-[#fc4c02]" />
-            )}
-            
-            {/* Distance */}
-            <div className="text-[28px] md:text-[40px] leading-none mb-2">
-              {effort.distance}
-              {effort.unit && (
-                <span className={`${effort.unit === "Marathon" || effort.unit === "KM" ? "text-[#fc4c02]" : ""}`}>
-                  {effort.unit}
-                </span>
-              )}
-            </div>
+            {efforts.map((effort, index) => {
+              const hasData = effort.time && effort.time !== '--:--:--';
+              
+              return (
+                <div key={index} className="text-center">
+                  {/* Medal Icon */}
+                  {effort.hasMedal && (
+                    <Trophy className={`w-6 h-6 mx-auto mb-2 ${hasData ? 'text-[#fc4c02]' : 'text-gray-300'}`} />
+                  )}
+                  
+                  {/* Distance */}
+                  <div className={`text-[28px] md:text-[40px] leading-none mb-2 ${hasData ? '' : 'text-gray-300'}`}>
+                    {effort.distance}
+                    {effort.unit && (
+                      <span className={`${
+                        hasData && (effort.unit === "Marathon" || effort.unit === "KM") 
+                          ? "text-[#fc4c02]" 
+                          : hasData ? "" : "text-gray-300"
+                      }`}>
+                        {effort.unit}
+                      </span>
+                    )}
+                  </div>
 
-            {/* Time */}
-            <div className="text-[20px] mb-1">{effort.time}</div>
+                  {/* Time */}
+                  <div className={`text-[20px] mb-1 ${hasData ? '' : 'text-gray-300'}`}>
+                    {effort.time}
+                  </div>
 
-            {/* Pace */}
-            <div className="text-gray-400 text-[12px] mb-1">{effort.pace}</div>
+                  {/* Pace */}
+                  <div className={`text-[12px] mb-1 ${hasData ? 'text-gray-400' : 'text-gray-300'}`}>
+                    {effort.pace}
+                  </div>
 
-            {/* Race Info */}
-            {effort.race && (
-              <>
-                <div className="text-gray-400 text-[11px]">{effort.race}</div>
-                <div className="text-gray-400 text-[11px]">{effort.date}</div>
-              </>
-            )}
-          </div>
-        ))}
+                  {/* Race Info */}
+                  {effort.race && hasData && (
+                    <>
+                      <div className="text-gray-400 text-[11px]">{effort.race}</div>
+                      <div className="text-gray-400 text-[11px]">{effort.date}</div>
+                    </>
+                  )}
+                </div>
+              );
+            })}
           </div>
         )}
       </div>
