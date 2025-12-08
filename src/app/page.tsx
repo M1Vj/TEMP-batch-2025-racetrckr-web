@@ -138,19 +138,13 @@ export default function Home() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.3 }}
-                className="flex flex-col sm:flex-row gap-4 pt-2"
+                className="pt-2"
               >
                 <Button
                   onClick={handleGetStarted}
                   className="bg-white text-[#FF6B00] px-6 py-3 rounded-full font-semibold hover:bg-gray-50 transition-colors shadow-lg h-auto"
                 >
                   Get Started
-                </Button>
-                <Button
-                  variant="outline"
-                  className="bg-white/10 backdrop-blur-sm text-white px-6 py-3 rounded-full font-semibold hover:bg-white/20 transition-colors border-2 border-white/30 h-auto"
-                >
-                  Learn More
                 </Button>
               </motion.div>
               
