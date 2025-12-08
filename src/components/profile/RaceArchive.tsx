@@ -7,6 +7,8 @@ interface Race {
   title: string;
   imageUrl: string;
   distance: string;
+  time: string;
+  pace: string;
 }
 
 interface RaceArchiveProps {
@@ -54,6 +56,8 @@ export default function RaceArchive({ races }: RaceArchiveProps) {
               title={race.title}
               imageUrl={race.imageUrl}
               distance={race.distance}
+              time={race.time}
+              pace={race.pace}
             />
           ))}
         </div>

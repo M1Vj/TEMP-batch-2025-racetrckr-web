@@ -46,6 +46,8 @@ interface RaceDisplay {
   title: string;
   imageUrl: string;
   distance: string;
+  time: string;
+  pace: string;
 }
 
 interface BestEffort {
@@ -222,11 +224,31 @@ export default function ProfilePage() {
             }
           }
 
+          // Format time
+          const raceHours = race.hours || 0;
+          const raceMinutes = race.minutes || 0;
+          const raceSeconds = race.seconds || 0;
+          const totalSeconds = raceHours * 3600 + raceMinutes * 60 + raceSeconds;
+          const timeDisplay = totalSeconds > 0
+            ? `${String(raceHours).padStart(2, '0')}:${String(raceMinutes).padStart(2, '0')}:${String(raceSeconds).padStart(2, '0')}`
+            : '--:--:--';
+
+          // Calculate pace
+          let paceDisplay = '-- / km';
+          if (race.distance && totalSeconds > 0) {
+            const pacePerKm = totalSeconds / race.distance / 60;
+            const paceMinutes = Math.floor(pacePerKm);
+            const paceSeconds = Math.round((pacePerKm - paceMinutes) * 60);
+            paceDisplay = `${paceMinutes}:${String(paceSeconds).padStart(2, '0')} / km`;
+          }
+
           return {
             id: race.id,
             title: race.name,
             imageUrl: race.cover_photo_url || 'https://images.unsplash.com/photo-1452626038306-9aae5e071dd3?w=800&q=80',
             distance: distanceDisplay,
+            time: timeDisplay,
+            pace: paceDisplay,
           };
         });
 
