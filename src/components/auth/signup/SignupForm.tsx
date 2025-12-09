@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import GoogleButton from '../shared/GoogleButton';
+import TurnstileWidget from '../shared/TurnstileWidget';
 import { createClient } from '@/lib/supabase';
 import { ButtonLoading } from '../shared/LoadingSpinner';
 
@@ -19,9 +20,16 @@ export default function SignupForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [showVerificationNotice, setShowVerificationNotice] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!captchaToken) {
+      toast.error('Please complete the CAPTCHA verification');
+      return;
+    }
+
     setIsLoading(true);
     setError('');
 
@@ -109,7 +117,7 @@ export default function SignupForm() {
           <div className="pt-4 border-t border-[#fc4c02]/20">
             <p className="text-xs text-gray-500">
               Didn't receive the email? Check your spam folder or{' '}
-              <button 
+              <button
                 onClick={() => setShowVerificationNotice(false)}
                 className="text-[#fc4c02] hover:underline font-medium"
               >
@@ -120,8 +128,8 @@ export default function SignupForm() {
         </div>
 
         <div className="text-center">
-          <Link 
-            href="/login" 
+          <Link
+            href="/login"
             className="text-sm text-[#fc4c02] hover:underline font-medium"
           >
             Already verified? Sign in
@@ -231,10 +239,10 @@ export default function SignupForm() {
         </div>
 
         <div className="flex items-start gap-2">
-          <input 
-            type="checkbox" 
+          <input
+            type="checkbox"
             id="terms"
-            className="w-4 h-4 mt-1 text-[#fc4c02] border-gray-300 rounded focus:ring-[#fc4c02]" 
+            className="w-4 h-4 mt-1 text-[#fc4c02] border-gray-300 rounded focus:ring-[#fc4c02]"
             required
           />
           <label htmlFor="terms" className="text-sm text-gray-600">
@@ -249,9 +257,15 @@ export default function SignupForm() {
           </label>
         </div>
 
+        <TurnstileWidget
+          onSuccess={setCaptchaToken}
+          onError={() => setCaptchaToken(null)}
+          onExpire={() => setCaptchaToken(null)}
+        />
+
         <Button
           type="submit"
-          disabled={isLoading}
+          disabled={isLoading || !captchaToken}
           className="w-full bg-[#fc4c02] hover:bg-[#e64602] text-white py-3 h-auto disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isLoading ? <ButtonLoading /> : 'Create account'}
