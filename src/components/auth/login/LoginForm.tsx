@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import GoogleButton from '../shared/GoogleButton';
+import TurnstileWidget from '../shared/TurnstileWidget';
 import { createClient } from '@/lib/supabase';
 import { ButtonLoading } from '../shared/LoadingSpinner';
 
@@ -17,6 +18,7 @@ export default function LoginForm() {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
 
   useEffect(() => {
     // Check for error messages from redirect
@@ -34,6 +36,12 @@ export default function LoginForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!captchaToken) {
+      toast.error('Please complete the CAPTCHA verification');
+      return;
+    }
+
     setIsLoading(true);
     setError('');
 
@@ -134,9 +142,15 @@ export default function LoginForm() {
           </Link>
         </div>
 
+        <TurnstileWidget
+          onSuccess={setCaptchaToken}
+          onError={() => setCaptchaToken(null)}
+          onExpire={() => setCaptchaToken(null)}
+        />
+
         <Button
           type="submit"
-          disabled={isLoading}
+          disabled={isLoading || !captchaToken}
           className="w-full bg-[#fc4c02] hover:bg-[#e64602] text-white py-3 h-auto disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isLoading ? <ButtonLoading /> : 'Sign in'}
